@@ -12,6 +12,8 @@ public class Tester {
 		}
 	}
 
+
+	//needs revisions on printouts
 	public static Boolean Test() {
 		Boolean passed = true;
 
@@ -20,7 +22,7 @@ public class Tester {
 		System.out.println(passed);
 
 		BSTNode node2 = new BSTNode (2);
-		node1.setRight(node2);
+		node1.setRight(node2.clone());
 		passed &= (node1.getRight() != node2);
 		System.out.println(passed);
 
@@ -36,7 +38,7 @@ public class Tester {
 
 
 		BSTree tree1 = new BSTree (node1);
-		passed &= (tree1.getRoot() != node1);
+		passed &= (tree1.getRoot() == node1);
 		System.out.println(passed);
 
 		passed &= (tree1.getRoot().getKey() == node1.getKey());

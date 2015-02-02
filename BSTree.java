@@ -10,7 +10,7 @@ public class BSTree implements Cloneable {
  	}
 
  	public BSTree (BSTNode root) {
- 		this.root = root.clone();
+ 		this.root = root;//.clone();
  		this.count = 1;
  	}
 
@@ -59,7 +59,7 @@ public class BSTree implements Cloneable {
  		if (this.root == null) {
  			this.root = new BSTNode(key);
  		} else {
- 			BSTNode current = this.root;
+ 			BSTNode current = this.clone().root; //insures purity
  			BSTNode last = current;
 
  			while (current != null) {
@@ -91,7 +91,7 @@ public class BSTree implements Cloneable {
  		if (this.root == null) {
  			System.out.println("Error, empty tree");
  		} else {
- 			BSTNode current = this.root;
+ 			BSTNode current = this.clone().root; //insures purity
  			BSTNode last = current;
 
  			while (current.getKey() != key && current != null) {
@@ -104,10 +104,46 @@ public class BSTree implements Cloneable {
  				}
  			}
 
+ 			String direction = "";
  			if (last.getKey() > key) {
- 				last.setLeft(null);
+ 				direction = "left";
  			} else {
- 				last.setRight(null);
+ 				direction = "right";
+ 			}
+
+ 			if (current == null) {
+ 				System.out.println("Key is not present in the tree.");
+ 			} else {
+ 				switch (current.numChildren()) {
+ 				case 0:
+ 					if (direction.equals("left")) {
+ 						last.setLeft(null);
+ 					} else {
+ 						last.setRight(null);
+ 					}
+ 					break;
+ 				case 1:
+ 					if (direction.equals("left")) {
+ 						if (current.hasLeft()) {
+ 							last.setLeft(current.getLeft());
+ 							current.getLeft().setParent(last);
+ 						} else {
+ 							last.setRight(current.getRight());
+ 							current.getRight().setParent(last);
+ 						}
+ 					} else if (current.hasLeft()) {
+ 						last.setRight(current.getLeft());
+ 						current.getLeft().setParent(last);
+ 					} else {
+ 						last.setRight(current.getRight());
+ 						current.getRight().setParent(last);
+ 					}
+ 					break;
+ 				case 2:
+ 					//complicated procedure here
+ 					break;
+
+ 				}
  			}
 
  		}

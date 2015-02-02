@@ -50,13 +50,32 @@ public class BSTNode implements Cloneable {
 		BSTNode right = this.getRight();
 
 		if (left != null) {
-			this.setLeft(left);
+			this.setLeft(left.clone());
 			this.getLeft().cloneChildrenTreeWalk();
 		}
 		if (right != null) {
-			this.setRight(right);
+			this.setRight(right.clone());
 			this.getRight().cloneChildrenTreeWalk();
 		}
+	}
+
+	public int numChildren() {
+		int count = 0;
+		if (this.hasLeft()) {
+			count++;
+		}
+		if (this.hasRight()) {
+			count++;
+		}
+		return count;
+	}
+
+	public Boolean hasLeft() {
+		return (this.left != null);
+	}
+
+	public Boolean hasRight() {
+		return (this.right != null);
 	}
 
 	public BSTNode getParent() {
@@ -76,17 +95,17 @@ public class BSTNode implements Cloneable {
 	}
 
 	//is cloning in the setters unnecessary since it's at the level of
-	//BSTree's where purity matters?
+	//BSTree's where purity matters? RESOLVED - YES, in fact causes issues
 	public void setParent(BSTNode parent) {
-		this.parent = parent.clone();
+		this.parent = parent;
 	}
 
 	public void setLeft(BSTNode left) {
-		this.left = left.clone();
+		this.left = left;
 	}
 
 	public void setRight(BSTNode right) {
-		this.right = right.clone();
+		this.right = right;
 		/*System.out.println("Set this.right to " + this.right);
 		System.out.println("Let's see what the right is..." + this.getRight());*/
 	}
