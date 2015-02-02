@@ -1,3 +1,7 @@
+/*
+TODO: fix cardinality issues
+*/
+
 public class BSTree implements Cloneable {
  	private BSTNode root;
  	private int count;
@@ -6,7 +10,7 @@ public class BSTree implements Cloneable {
  	}
 
  	public BSTree (BSTNode root) {
- 		this.root = root;
+ 		this.root = root.clone();
  		this.count = 1;
  	}
 
@@ -107,6 +111,8 @@ public class BSTree implements Cloneable {
  			}
 
  		}
+
+ 		this.count--;
  	}
 
  	public Boolean search (int key) {

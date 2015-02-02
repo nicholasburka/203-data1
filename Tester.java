@@ -5,10 +5,14 @@
 public class Tester {
 
 	public static void main (String[] args) {
-		BSTNodeTest();
+		if (Test()) {
+			System.out.println("All tests passed!");
+		} else {
+			System.out.println("Test(s) failed.");
+		}
 	}
 
-	public static Boolean BSTNodeTest() {
+	public static Boolean Test() {
 		Boolean passed = true;
 
 		BSTNode node1 = new BSTNode (1);
@@ -31,6 +35,30 @@ public class Tester {
 		System.out.println(passed);
 
 
+		BSTree tree1 = new BSTree (node1);
+		passed &= (tree1.getRoot() != node1);
+		System.out.println(passed);
+
+		passed &= (tree1.getRoot().getKey() == node1.getKey());
+		System.out.println(passed);
+
+		BSTree tree2 = tree1.clone();
+		passed &= (tree1 != tree2);
+		System.out.println(passed);
+		passed &= (tree1.getRoot().getKey() == tree2.getRoot().getKey());
+		System.out.println(passed);
+		passed &= (tree1.getRoot().getRight() != tree2.getRoot().getRight());
+		System.out.println(passed);
+		passed &= (tree1.getRoot().getRight().getKey() == tree2.getRoot().getRight().getKey());
+		System.out.println(passed);
+
 		return passed;
 	}
 }
+/*
+public abstract class Test {
+	public String testName;
+
+	public abstract Boolean procedure();
+}
+*/

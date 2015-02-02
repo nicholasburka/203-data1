@@ -39,8 +39,8 @@ public class BSTNode implements Cloneable {
 			newBSTNode.setRight(this.getRight());
 		}
 		newBSTNode.setKey(this.getKey());
-		System.out.println(newBSTNode);
-		System.out.println(newBSTNode.getKey());
+		/*System.out.println(newBSTNode);
+		System.out.println(newBSTNode.getKey());*/
 		return newBSTNode;
 	}
 
@@ -87,8 +87,8 @@ public class BSTNode implements Cloneable {
 
 	public void setRight(BSTNode right) {
 		this.right = right.clone();
-		System.out.println("Set this.right to " + this.right);
-		System.out.println("Let's see what the right is..." + this.getRight());
+		/*System.out.println("Set this.right to " + this.right);
+		System.out.println("Let's see what the right is..." + this.getRight());*/
 	}
 
 	public void setKey(int key) {
