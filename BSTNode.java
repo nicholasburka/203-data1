@@ -29,11 +29,34 @@ public class BSTNode implements Cloneable {
 
 	@Override public BSTNode clone() {
 		BSTNode newBSTNode = new BSTNode();
-		newBSTNode.setParent(this.getParent());
-		newBSTNode.setLeft(this.getLeft());
-		newBSTNode.setRight(this.getRight());
+		if (this.getParent() != null) {
+			newBSTNode.setParent(this.getParent());
+		}
+		if (this.getLeft() != null) {
+			newBSTNode.setLeft(this.getLeft());
+		}
+		if (this.getRight() != null) {
+			newBSTNode.setRight(this.getRight());
+		}
 		newBSTNode.setKey(this.getKey());
+		System.out.println(newBSTNode);
+		System.out.println(newBSTNode.getKey());
 		return newBSTNode;
+	}
+
+	//resembles recursive algorithm for pre-order tree walk
+	public void cloneChildrenTreeWalk() {
+		BSTNode left = this.getLeft();
+		BSTNode right = this.getRight();
+
+		if (left != null) {
+			this.setLeft(left);
+			this.getLeft().cloneChildrenTreeWalk();
+		}
+		if (right != null) {
+			this.setRight(right);
+			this.getRight().cloneChildrenTreeWalk();
+		}
 	}
 
 	public BSTNode getParent() {
@@ -45,13 +68,15 @@ public class BSTNode implements Cloneable {
 	}
 
 	public BSTNode getRight() {
-		return this.left;
+		return this.right;
 	}
 
 	public int getKey() {
 		return this.key;
 	}
 
+	//is cloning in the setters unnecessary since it's at the level of
+	//BSTree's where purity matters?
 	public void setParent(BSTNode parent) {
 		this.parent = parent.clone();
 	}
@@ -62,6 +87,8 @@ public class BSTNode implements Cloneable {
 
 	public void setRight(BSTNode right) {
 		this.right = right.clone();
+		System.out.println("Set this.right to " + this.right);
+		System.out.println("Let's see what the right is..." + this.getRight());
 	}
 
 	public void setKey(int key) {

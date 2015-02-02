@@ -1,4 +1,4 @@
-public class BSTree {
+public class BSTree implements Cloneable {
  	private BSTNode root;
  	private int count;
 
@@ -10,6 +10,17 @@ public class BSTree {
  		this.count = 1;
  	}
 
+ 	public BSTree clone () {
+ 		BSTree newBSTree = new BSTree(this.root.clone());
+ 		newBSTree.getRoot().cloneChildrenTreeWalk();
+ 		return newBSTree;
+ 	}
+
+ 	//probably not good practice to have this method
+ 	public BSTNode getRoot() {
+ 		return this.root;
+ 	}
+
  	public void insert (BSTNode node) {
  		if (this.root == null) {
  			this.root = node;
@@ -18,17 +29,17 @@ public class BSTree {
  			BSTNode last = current;
 
  			while (current != null) {
- 				//note that this tree abides by greater than or equal
- 				//nodes as the right child
+ 				//note that this tree abides by 
+ 				//nodes in the left subtree will be <= parent nodes
  				last = current;
- 				if (current.getKey() > node.getKey()) {
+ 				if (current.getKey() >= node.getKey()) {
  					current = current.getLeft();
  				} else {
  					current = current.getRight();
  				}
  			}
 
- 			if (last.getKey() > node.getKey()) {
+ 			if (last.getKey() >= node.getKey()) {
  				last.setLeft(node);
  			} else {
  				last.setRight(node);
@@ -51,7 +62,7 @@ public class BSTree {
  				//note that this tree abides by greater than or equal
  				//nodes as the right child
  				last = current;
- 				if (current.getKey() > key) {
+ 				if (current.getKey() >= key) {
  					current = current.getLeft();
  				} else {
  					current = current.getRight();
@@ -60,7 +71,7 @@ public class BSTree {
 
  			BSTNode newb = new BSTNode(key);
 
- 			if (last.getKey() > key) {
+ 			if (last.getKey() >= key) {
  				last.setLeft(newb);
  			} else {
  				last.setRight(newb);
@@ -82,7 +93,7 @@ public class BSTree {
  			while (current.getKey() != key && current != null) {
 
  				last = current;
- 				if (current.getKey() > key) {
+ 				if (current.getKey() >= key) {
  					current = current.getLeft();
  				} else {
  					current = current.getRight();
@@ -106,7 +117,7 @@ public class BSTree {
 
  			while (current.getKey() != key && current != null) {
 
- 				if (current.getKey() > key) {
+ 				if (current.getKey() >= key) {
  					current = current.getLeft();
  				} else {
  					current = current.getRight();
