@@ -6,6 +6,19 @@
 	    --> deep copying by defensive copying in BSTNode, BSTree constructors
 */
 
-public class FiniteSet {
+public interface FiniteSet {
+	public int cardinality();
+	
+	public Boolean isEmptyHuh();
+
+	public FiniteSet insert(int x);
+
+	/*public FiniteSet remove(int x);
+
+	public int cardinality();
+
+	public FiniteSet successor();
+
+	public FiniteSet minimum();*/
 
 }

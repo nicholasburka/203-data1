@@ -8,7 +8,9 @@ CLASSES = \
 	FiniteSet.java \
 	BSTNode.java \
 	BSTree.java \
-	Tester.java
+	Branch.java \
+	Leaf.java \
+	Tester.java 
 
 default: classes
 
