@@ -13,7 +13,15 @@ public class Leaf implements FiniteSet {
 		return true;
 	}
 
-	public FiniteSet insert(int x) {
+	public Boolean member(int x) {
+		return false;
+	}
+
+	public FiniteSet add(int x) {
 		return new Branch (this, x, this);
+	}
+
+	public FiniteSet remove(int x) {
+		throw new RuntimeException("Leaf has no value or children");
 	}
 }

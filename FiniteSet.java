@@ -8,12 +8,16 @@
 
 public interface FiniteSet {
 	public int cardinality();
-	
+
 	public Boolean isEmptyHuh();
 
-	public FiniteSet insert(int x);
+	public Boolean member(int x);
 
-	/*public FiniteSet remove(int x);
+	public FiniteSet add(int x);
+
+	public FiniteSet remove(int x);
+
+	/*
 
 	public int cardinality();
 
