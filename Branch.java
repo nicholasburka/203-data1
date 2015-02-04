@@ -22,7 +22,13 @@ public class Branch implements FiniteSet {
 	}
 
 	public Boolean member(int x) {
-		return (x == this.key || this.left.member(x) || this.right.member(x));
+		if (x == this.key) {
+			return true;
+		} else if (x > this.key) {
+			return this.right.member(x);
+		} else {//if (x < this.key)
+			return this.left.member(x);
+		}
 	}
 	
 	public FiniteSet add (int x) {

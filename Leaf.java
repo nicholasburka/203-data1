@@ -22,6 +22,6 @@ public class Leaf implements FiniteSet {
 	}
 
 	public FiniteSet remove(int x) {
-		throw new RuntimeException("Leaf has no value or children");
+		return this;
 	}
 }
