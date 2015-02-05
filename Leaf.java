@@ -24,4 +24,12 @@ public class Leaf implements FiniteSet {
 	public FiniteSet remove(int x) {
 		return this;
 	}
+
+	public FiniteSet diff(FiniteSet s) {
+		return this;
+	}
+
+	public FiniteSet union(FiniteSet s) {
+		return s;
+	}
 }

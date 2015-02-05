@@ -45,25 +45,29 @@ public class Branch implements FiniteSet {
 
 	public FiniteSet remove (int x) {
 		if (x == this.key) {
-			//No children: this branch --> leaf
-			if (this.cardinality() == 1) {
-				return new Leaf();
-			} else {
-				//One child: replace this Branch with its child
-				if (this.left.cardinality() == 0) {
-					return this.right;
-				} else if (this.right.cardinality() == 0) {
-					return this.left;
-				} else {
-					//Two children: complicated stuff
-					return new Leaf();
-				}
-			}
+			return this.left.union(this.right);
 		} else if (x > this.key) {
-			return new Branch(this.left, this.key, this.right.remove(x));
+			return new Branch (this.left, this.key, this.right.remove(x));
 		} else {
-			return new Branch(this.left.remove(x), this.key, this.right);
+			return new Branch (this.left.remove(x), this.key, this.right.remove(x));
 		}
+	}
+
+	public FiniteSet union (FiniteSet s) {
+		//Is this step necessary? No, but more efficient? Maybe?
+		if (s.isEmptyHuh()) {
+			return this;
+		} else {
+			//We can't access the properties of s, so instead use s
+			//as the basis of the union (by calling methods on s)
+			//Luckily this isn't mutation because "add" does not mutate
+			return s.add(this.key).union(this.left).union(this.right);
+		}
+	}
+
+	public FiniteSet diff (FiniteSet s) {
+		//To Be Implemented (later)
+		return this;
 	}
 
 }

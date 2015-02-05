@@ -17,11 +17,12 @@ public interface FiniteSet {
 
 	public FiniteSet remove(int x);
 
+	public FiniteSet diff(FiniteSet s);
+
+	public FiniteSet union(FiniteSet s);
+
 	/*
 
-	public int cardinality();
-
-	public FiniteSet successor();
 
 	public FiniteSet minimum();*/
 

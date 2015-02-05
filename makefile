@@ -6,8 +6,6 @@ JC = javac
 
 CLASSES = \
 	FiniteSet.java \
-	BSTNode.java \
-	BSTree.java \
 	Branch.java \
 	Leaf.java \
 	Tester.java 
