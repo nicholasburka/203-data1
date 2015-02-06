@@ -87,8 +87,8 @@ public class Branch implements FiniteSet {
 
 	public Boolean subset (FiniteSet s) {
 		return s.member(this.key) 
-			&& (this.left.isEmptyHuh() || this.left.subset(s)) 
-			&& (this.right.isEmptyHuh() || this.right.subset(s));
+			&& this.left.subset(s)
+			&& this.right.subset(s);
 	}
 
 
