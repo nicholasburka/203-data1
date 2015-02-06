@@ -54,20 +54,25 @@ public class Branch implements FiniteSet {
 	}
 
 	public FiniteSet union (FiniteSet s) {
-		//Is this step necessary? No, but more efficient? Maybe?
-		if (s.isEmptyHuh()) {
-			return this;
+		//We can't access the properties of s, so instead use s
+		//as the basis of the union (by calling methods on s)
+		//Luckily this isn't mutation because "add" does not mutate
+		return s.add(this.key).union(this.left).union(this.right);
+	}
+
+	public FiniteSet inter (FiniteSet s) {
+		if (s.member(this.key)) {
+			return new Branch (this.left.inter(s), this.key, this.right.inter(s));
 		} else {
-			//We can't access the properties of s, so instead use s
-			//as the basis of the union (by calling methods on s)
-			//Luckily this isn't mutation because "add" does not mutate
-			return s.add(this.key).union(this.left).union(this.right);
+			return this.remove(this.key).inter(s);
 		}
 	}
 
 	public FiniteSet diff (FiniteSet s) {
 		//To Be Implemented (later)
 		return this;
+
+		//remove all elements of s from this
 	}
 
 }

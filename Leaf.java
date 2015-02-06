@@ -25,11 +25,15 @@ public class Leaf implements FiniteSet {
 		return this;
 	}
 
-	public FiniteSet diff(FiniteSet s) {
+	public FiniteSet union(FiniteSet s) {
+		return s;
+	}
+
+	public FiniteSet inter(FiniteSet s) {
 		return this;
 	}
 
-	public FiniteSet union(FiniteSet s) {
-		return s;
+	public FiniteSet diff(FiniteSet s) {
+		return this;
 	}
 }

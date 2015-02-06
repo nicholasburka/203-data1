@@ -17,9 +17,11 @@ public interface FiniteSet {
 
 	public FiniteSet remove(int x);
 
-	public FiniteSet diff(FiniteSet s);
-
 	public FiniteSet union(FiniteSet s);
+
+	public FiniteSet inter(FiniteSet s);
+
+	public FiniteSet diff(FiniteSet s);
 
 	/*
 
