@@ -23,6 +23,10 @@ public interface FiniteSet {
 
 	public FiniteSet diff(FiniteSet s);
 
+	public Boolean equal(FiniteSet s);
+
+	public Boolean subset(FiniteSet s);
+
 	/*
 
 

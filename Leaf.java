@@ -36,4 +36,12 @@ public class Leaf implements FiniteSet {
 	public FiniteSet diff(FiniteSet s) {
 		return this;
 	}
+
+	public Boolean equal(FiniteSet s) {
+		return s.isEmptyHuh();
+	}
+
+	public Boolean subset(FiniteSet s) {
+		return true;
+	}
 }

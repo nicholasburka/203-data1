@@ -53,6 +53,7 @@ public class Branch implements FiniteSet {
 		}
 	}
 
+	//Returns the superset that contains this set and set s
 	public FiniteSet union (FiniteSet s) {
 		//We can't access the properties of s, so instead use s
 		//as the basis of the union (by calling methods on s)
@@ -60,6 +61,7 @@ public class Branch implements FiniteSet {
 		return s.add(this.key).union(this.left).union(this.right);
 	}
 
+	//Returns things that are in both sets (the intersection)
 	public FiniteSet inter (FiniteSet s) {
 		if (s.member(this.key)) {
 			return new Branch (this.left.inter(s), this.key, this.right.inter(s));
@@ -68,11 +70,27 @@ public class Branch implements FiniteSet {
 		}
 	}
 
+	//Returns the things in this that are not in s
 	public FiniteSet diff (FiniteSet s) {
-		//To Be Implemented (later)
-		return this;
-
-		//remove all elements of s from this
+		if (s.member(this.key)) {
+			//remove this if it's in s
+			return this.remove(this.key).diff(s);
+		} else {
+			//check both branches if it's not
+			return new Branch (this.left.diff(s), this.key, this.right.diff(s));
+		}
 	}
+
+	public Boolean equal (FiniteSet s) {
+		return this.subset(s) && s.subset(this);
+	}
+
+	public Boolean subset (FiniteSet s) {
+		return s.member(this.key) 
+			&& (this.left.isEmptyHuh() || this.left.subset(s)) 
+			&& (this.right.isEmptyHuh() || this.right.subset(s));
+	}
+
+
 
 }
