@@ -7,7 +7,7 @@ import java.util.Random;
 public class Tester {
 	private final int NUM_TIMES = 10;
 	private final int UPPER_BOUND = 1000;
-	private int numElements = 100;
+	private int numElements = 20;
 
 	public Tester () {}
 
@@ -43,6 +43,12 @@ public class Tester {
 		e.procedure(NUM_TIMES, UPPER_BOUND, numElements);
 		printTest(e.testDescription, e.passed);
 		passed &= e.passed;
+
+		setUpTest();
+		Remove r = new Remove();
+		r.procedure(NUM_TIMES, UPPER_BOUND, numElements);
+		printTest(r.testDescription, r.passed);
+		passed &= r.passed;
 
 		return passed;
 	}
@@ -163,5 +169,40 @@ class Empty extends Test {
 			}
 		}
 		return this.passed;
+	}
+}
+
+class Remove extends Test {
+	public String testDescription = "Check that sets containing elements no longer contain those elements after removal";
+
+	Remove() {}
+
+	public Boolean procedure(int numTimes, int upperBound, int numElements) {
+		FiniteSet set = new Leaf();
+		int[] nums = new int[numElements];
+		Random rand = new Random();
+		Boolean passed = true;
+		for (int h = 0; h < numTimes; h++) {
+			for (int i = 0; i < numElements; i++) {
+				nums[i] = rand.nextInt(upperBound);
+			}
+			for (int j = 0; j < nums.length; j++) {
+				set = set.add(nums[j]);
+			}
+			//System.out.println("Starting removals...");
+			for (int l = 0; l < nums.length; l++) {
+				set = set.remove(nums[l]);
+			}
+			//System.out.println("Finished removals");
+			for (int e = 0; e < nums.length; e++) {
+				passed &= !(set.member(nums[e]));
+				if (!passed) {
+					System.out.println("Element " + nums[e] + " was a member of the set");
+					System.out.println(set);
+				}
+			}
+		}
+		MakeSet.passed = passed;
+		return passed;
 	}
 }

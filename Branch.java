@@ -58,7 +58,7 @@ public class Branch implements FiniteSet {
 		//We can't access the properties of s, so instead use s
 		//as the basis of the union (by calling methods on s)
 		//Luckily this isn't mutation because "add" does not mutate
-		return s.add(this.key).union(this.left).union(this.right);
+		return s.union(this.left).union(this.right).add(this.key);
 	}
 
 	//Returns things that are in both sets (the intersection)
