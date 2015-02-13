@@ -171,6 +171,8 @@ class Cardinality extends Test {
 			if (!passed) {
 				System.out.println("Cardinality of set " + set + " was not " + numElements);
 			}
+			set = new Leaf();
+			this.passed = set.cardinality() == 0;
 		}
 		this.passed = passed;
 		return this.passed;
@@ -199,6 +201,7 @@ class Empty extends Test {
 
 			set = generateFiniteSet(upperBound, numElements);
 			this.passed = !(set.isEmptyHuh());
+
 			if (!passed) {
 				System.out.println("Nonempty set " + set + " was empty");
 			}
@@ -256,6 +259,7 @@ class Union extends Test {
 		int[] nums2 = new int[numElements];
 		Random rand = new Random();
 		Boolean passed = true;
+		int currentMax;
 		for (int i = 0; i < numTimes; i++) {
 			set1 = new Leaf();
 			set2 = new Leaf();
@@ -270,7 +274,6 @@ class Union extends Test {
 			}
 
 			unionSet = set1.union(set2);
-
 			passed &= set1.subset(unionSet);
 			if (!passed) {
 				System.out.println("set1 wasn't a subset of unionSet");
@@ -279,6 +282,11 @@ class Union extends Test {
 			for (int j = 0; j < numElements; j++) {
 				passed &= unionSet.member(nums1[j]);
 				passed &= unionSet.member(nums2[j]);
+			}
+			for (int h = 0; h < numElements; h++) {
+				currentMax = unionSet.max();
+				unionSet = unionSet.remove(currentMax);
+				passed &= (set1.member(currentMax) || set2.member(currentMax)); 
 			}
 		}
 		Union.passed = passed;
@@ -343,7 +351,7 @@ class Diff extends Test {
 }
 
 class Equal extends Test {
-	public String testDescription = "Check that two sets with the same elements inserted in both different or identical orders are equal";
+	public String testDescription = "Check that two sets with the same elements inserted in both different or identical orders are equal, and that the difference is empty";
 
 	Equal() {}
 
@@ -369,13 +377,14 @@ class Equal extends Test {
 			if (!passed) {
 				System.out.println(set1 + " is not equal to " + set2);
 			}
+			passed &= (set1.diff(set2).isEmptyHuh() && set2.diff(set1).isEmptyHuh());
 		}
 		return passed;
 	}
 }
 
 class Subset extends Test {
-	public String testDescription = "Check that a set that has only some of the elements of another set is a subset of that set";
+	public String testDescription = "Check that a set that has only some of the elements of another set is a subset of that set, and that they are not equal";
 
 	Subset() {}
 
@@ -401,6 +410,7 @@ class Subset extends Test {
 			if (!passed) {
 				System.out.println(subSet + " is not a subset of " + superSet);
 			}
+			passed &= !subSet.equal(superSet);
 		}
 		return passed;
 	}
