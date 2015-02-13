@@ -44,4 +44,8 @@ public class Leaf implements FiniteSet {
 	public Boolean subset(FiniteSet s) {
 		return true;
 	}
+
+	public int max() {
+		throw new RuntimeException();
+	}
 }

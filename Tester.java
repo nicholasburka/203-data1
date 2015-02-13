@@ -24,6 +24,10 @@ public class Tester {
 
 	//needs revisions on printouts
 	public Boolean Test() {
+		System.out.println("\nRunning each test " + this.NUM_TIMES + " times.");
+		System.out.println("Generating keys between 0 (inclusive) and " + this.UPPER_BOUND + " (exclusive).");
+		System.out.println("Generating sets with " + this.numElements + " elements.");
+
 		Boolean passed = true;
 
 		setUpTest();
@@ -49,6 +53,36 @@ public class Tester {
 		r.procedure(NUM_TIMES, UPPER_BOUND, numElements);
 		printTest(r.testDescription, r.passed);
 		passed &= r.passed;
+
+		setUpTest();
+		Union u = new Union();
+		u.procedure(NUM_TIMES, UPPER_BOUND, numElements);
+		printTest(u.testDescription, u.passed);
+		passed &= u.passed;
+
+		setUpTest();
+		Inter i = new Inter();
+		i.procedure(NUM_TIMES, UPPER_BOUND, numElements);
+		printTest(i.testDescription, i.passed);
+		passed &= i.passed;
+
+		setUpTest();
+		Diff d = new Diff();
+		d.procedure(NUM_TIMES, UPPER_BOUND, numElements);
+		printTest(d.testDescription, d.passed);
+		passed &= d.passed;
+
+		setUpTest();
+		Equal eq = new Equal();
+		eq.procedure(NUM_TIMES, UPPER_BOUND, numElements);
+		printTest(eq.testDescription, eq.passed);
+		passed &= eq.passed;
+
+		setUpTest();
+		Subset s = new Subset();
+		s.procedure(NUM_TIMES, UPPER_BOUND, numElements);
+		printTest(s.testDescription, s.passed);
+		passed &= s.passed;
 
 		return passed;
 	}
@@ -138,6 +172,7 @@ class Cardinality extends Test {
 				System.out.println("Cardinality of set " + set + " was not " + numElements);
 			}
 		}
+		this.passed = passed;
 		return this.passed;
 	}
 }
@@ -172,6 +207,7 @@ class Empty extends Test {
 	}
 }
 
+//this test is especially slow because of naive removal implementation
 class Remove extends Test {
 	public String testDescription = "Check that sets containing elements no longer contain those elements after removal";
 
@@ -202,7 +238,170 @@ class Remove extends Test {
 				}
 			}
 		}
-		MakeSet.passed = passed;
+		this.passed = passed;
+		return passed;
+	}
+}
+
+class Union extends Test {
+	public String testDescription = "Check that the union of two sets contains only elements that are in at least one of the sets, \nand that both sets are subsets of their union";
+
+	Union() {}
+
+	public Boolean procedure(int numTimes, int upperBound, int numElements) {
+		FiniteSet set1 = new Leaf();
+		FiniteSet set2 = new Leaf();
+		FiniteSet unionSet = set1.union(set2);
+		int[] nums1 = new int[numElements];
+		int[] nums2 = new int[numElements];
+		Random rand = new Random();
+		Boolean passed = true;
+		for (int i = 0; i < numTimes; i++) {
+			set1 = new Leaf();
+			set2 = new Leaf();
+			unionSet = set1.union(set2);
+			for (int j = 0; j < numElements; j++) {
+				nums1[j] = rand.nextInt(upperBound);
+				nums2[j] = rand.nextInt(upperBound);
+			}
+			for (int j = 0; j < numElements; j++) {
+				set1 = set1.add(nums1[j]);
+				set2 = set2.add(nums2[j]);
+			}
+
+			unionSet = set1.union(set2);
+
+			passed &= set1.subset(unionSet);
+			if (!passed) {
+				System.out.println("set1 wasn't a subset of unionSet");
+			}
+			passed &= set2.subset(unionSet);
+			for (int j = 0; j < numElements; j++) {
+				passed &= unionSet.member(nums1[j]);
+				passed &= unionSet.member(nums2[j]);
+			}
+		}
+		Union.passed = passed;
+		return passed;
+	}
+}
+
+class Inter extends Test {
+	public String testDescription = "Check that the intersection of two sets contains only elements that are in both of the sets.";
+
+	Inter() {}
+
+	public Boolean procedure(int numTimes, int upperBound, int numElements) {
+		FiniteSet set1;
+		FiniteSet set2;
+		FiniteSet intersect;
+		int currentMax;
+		for (int i = 0; i < numTimes; i++) {
+			set1 = generateFiniteSet(upperBound, numElements);
+			set2 = generateFiniteSet(upperBound, numElements);
+			intersect = set1.inter(set2);
+			while (!intersect.isEmptyHuh()) {
+				currentMax = intersect.max();
+				intersect = intersect.remove(currentMax);
+				passed &= (set1.member(currentMax) && set2.member(currentMax));
+				if (!passed) {
+					System.out.println(currentMax + " wasn't a member of both " + set1 + " and " + set2);
+				}
+			}
+		}
+		this.passed = passed;
+		return passed;
+	}
+}
+
+class Diff extends Test {
+	public String testDescription = "Check that the difference of two sets contains only elements from the first set";
+
+	Diff() {}
+
+	public Boolean procedure(int numTimes, int upperBound, int numElements) {
+		FiniteSet set1;
+		FiniteSet set2;
+		FiniteSet diff;
+		int currentMax;
+		for (int i = 0; i < numTimes; i++) {
+			set1 = generateFiniteSet(upperBound, numElements);
+			set2 = generateFiniteSet(upperBound, numElements);
+			diff = set1.diff(set2);
+			while (!diff.isEmptyHuh()) {
+				currentMax = diff.max();
+				diff = diff.remove(currentMax);
+				passed &= ((!set2.member(currentMax)) && set1.member(currentMax));
+				if (!passed) {
+					System.out.println(currentMax + " wasn't a member of " + set1 + " or was a member of " + set2);
+				}
+			}
+		}
+		this.passed = passed;
+		return passed;
+	}
+}
+
+class Equal extends Test {
+	public String testDescription = "Check that two sets with the same elements inserted in both different or identical orders are equal";
+
+	Equal() {}
+
+	public Boolean procedure(int numTimes, int upperBound, int numElements) {
+		FiniteSet set1;
+		FiniteSet set2;
+		int[] nums = new int[numElements];
+		Random rand = new Random();
+		int offset;
+		passed = true;
+		for (int i = 0; i < numTimes; i++) {
+			set1 = new Leaf();
+			set2 = new Leaf();
+			for (int j = 0; j < numElements; j++) {
+				nums[j] = rand.nextInt(upperBound);
+			}
+			offset = rand.nextInt(numElements);
+			for (int j = 0; j < nums.length; j++) {
+				set1 = set1.add(nums[j]);
+				set2 = set2.add(nums[(j + offset)%nums.length]);
+			}
+			passed &= (set1.equal(set2) && set2.equal(set1));
+			if (!passed) {
+				System.out.println(set1 + " is not equal to " + set2);
+			}
+		}
+		return passed;
+	}
+}
+
+class Subset extends Test {
+	public String testDescription = "Check that a set that has only some of the elements of another set is a subset of that set";
+
+	Subset() {}
+
+	public Boolean procedure(int numTimes, int upperBound, int numElements) {
+		FiniteSet superSet = new Leaf();
+		FiniteSet subSet = new Leaf();
+		int[] nums = new int[numElements];
+		Random rand = new Random();
+		passed = true;
+		for (int i = 0; i < numTimes; i++) {
+			superSet = new Leaf();
+			subSet = new Leaf();
+			for (int j = 0; j < nums.length; j++) {
+				nums[j] = rand.nextInt(upperBound);
+			}
+			for (int j = 0; j < nums.length; j++) {
+				superSet = superSet.add(nums[j]);
+				if (j % 2 == 0) {
+					subSet = subSet.add(nums[j]);
+				}
+			}
+			passed &= (subSet.subset(superSet));
+			if (!passed) {
+				System.out.println(subSet + " is not a subset of " + superSet);
+			}
+		}
 		return passed;
 	}
 }

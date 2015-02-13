@@ -27,6 +27,8 @@ public interface FiniteSet {
 
 	public Boolean subset(FiniteSet s);
 
+	public int max();
+
 	/*
 
 

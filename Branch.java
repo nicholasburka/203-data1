@@ -91,6 +91,14 @@ public class Branch implements FiniteSet {
 			&& this.right.subset(s);
 	}
 
+	public int max () {
+		if (this.right.isEmptyHuh()) {
+			return this.key;
+		} else {
+			return this.right.max();
+		}
+	}
+
 
 
 }
