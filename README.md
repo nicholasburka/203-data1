@@ -1,4 +1,4 @@
 # 203-data1
-First CS203 assignment - finite sets
+A pure implementation of FiniteSets of integers using Binary Search Trees
 
-Currently attempting to finish BSTree implementation.
+First CS203 assignment - assignment code "data1"

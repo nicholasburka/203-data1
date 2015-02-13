@@ -1,5 +1,12 @@
 *.class
 
+# Tex files #
+*.tex
+*.pdf
+*.aux
+*.log
+*.synctex.gz
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
